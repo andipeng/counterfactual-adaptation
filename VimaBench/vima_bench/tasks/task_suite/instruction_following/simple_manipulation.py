@@ -309,8 +309,8 @@ class SimpleManipulation(BaseTask):
             [
                 t.value
                 for t in self.rng.choice(
-                    self.possible_dragged_obj_texture,
-                    size=self.task_meta["num_dragged_obj"],
+                    self.possible_base_obj_texture,
+                    size=self.task_meta["num_base_obj"],
                 )
             ],
         ]
@@ -359,7 +359,18 @@ class SimpleManipulation(BaseTask):
         if not not_reach_max_times:
             raise ValueError("Error in sampling base object")
 
-        # add dragged objects
+    # add dragged objects
+        sampled_colors = [
+            self.rng.choice(self.possible_dragged_obj_texture).value,
+            [
+                t.value
+                for t in self.rng.choice(
+                    self.possible_dragged_obj_texture,
+                    size=self.task_meta["num_dragged_obj"],
+                )
+            ],
+        ]
+
         dragged_poses = []
         dragged = []
         not_reach_max_times = False
