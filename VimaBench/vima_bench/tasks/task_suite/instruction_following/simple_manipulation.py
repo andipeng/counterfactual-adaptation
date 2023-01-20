@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import itertools
 from typing import NamedTuple, Literal
+import random
 
 import numpy as np
 import pybullet as p
@@ -32,9 +33,9 @@ class SimpleManipulation(BaseTask):
         num_dragged_obj: int = 1,
         num_base_obj: int = 1,
         num_distractors_obj: int = 1,
-        base_obj_area: int = 1, # 4 quadrants for positions
-        dragged_obj_area: int = 2,
-        distractor_obj_area: int = 4,
+        base_obj_area: list[int] = [1], # 4 quadrants for positions
+        dragged_obj_area: list[int] = [2],
+        distractor_obj_area: list[int] = [4],
         dragged_obj_express_types: Literal["image", "name"] = "image",
         base_obj_express_types: Literal["image", "name"] = "image",
         distractor_obj_express_types: Literal["image", "name"] = "image",
@@ -325,6 +326,7 @@ class SimpleManipulation(BaseTask):
                 high=sampled_base_obj.size_range.high,
             )
             base_obj_area = self.task_meta["base_obj_area"]
+            base_obj_area = random.choice(base_obj_area)
             base_pose = self.get_discrete_pose(env, base_size, base_obj_area) # DISCRETE SAMPLING
             self.base_pose = base_pose
             obj_id, urdf_full_path, pose = self.add_object_to_env(
@@ -383,6 +385,7 @@ class SimpleManipulation(BaseTask):
             )
             #dragged_pose = self.get_random_pose(env, dragged_size)
             dragged_obj_area = self.task_meta["dragged_obj_area"]
+            dragged_obj_area = random.choice(dragged_obj_area)
             dragged_pose = self.get_discrete_pose(env, base_size, dragged_obj_area) # DISCRETE SAMPLING
             self.dragged_pose = dragged_pose
             # noinspection PyUnboundLocalVariable
@@ -479,6 +482,7 @@ class SimpleManipulation(BaseTask):
                 high=sampled_distractor_obj.size_range.high,
             )
             distractor_obj_area = self.task_meta["distractor_obj_area"]
+            distractor_obj_area = random.choice(distractor_obj_area)
             distractor_pose = self.get_discrete_pose(env, distractor_size, distractor_obj_area) # DISCRETE SAMPLING
             self.distractor_pose = distractor_pose
             obj_id, urdf_full_path, pose = self.add_object_to_env(
