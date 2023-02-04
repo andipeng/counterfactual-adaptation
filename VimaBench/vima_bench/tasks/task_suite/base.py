@@ -574,6 +574,8 @@ class BaseTask:
             pix = [75, 120]
         elif discrete == 4:
             pix = [200, 120]
+        elif discrete == 5:
+            pix = [140, 60]
 
         #pix = utils.sample_distribution(prob=np.float32(free), rng=self.rng)
         pos = utils.pix_to_xyz(pix, hmap, self.bounds, self.pix_size)
