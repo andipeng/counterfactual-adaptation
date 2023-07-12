@@ -16,15 +16,15 @@
 
 <html lang="en">
 <head>
-	<title>Causal Imitation Learning under Temporally Correlated Noise</title>
+	<title>Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation</title>
     <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/
         if you update and want to force Facebook to re-scrape. -->
-	<meta property="og:title" content="Causal Imitation Learning under Temporally Correlated Noise" />
+	<meta property="og:title" content="Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation" />
 	<meta property="og:description" content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <!-- Twitter automatically scrapes this. Go to https://cards-dev.twitter.com/validator?
         if you update and want to force Twitter to re-scrape. -->
     <meta property="twitter:card"          content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
-    <meta property="twitter:title"         content="Causal Imitation Learning under Temporally Correlated Noise" />
+    <meta property="twitter:title"         content="Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation" />
     <meta property="twitter:description"   content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -33,44 +33,52 @@
 <body>
 <div class="container">
     <div class="title">
-        Causal Imitation Learning under Temporally Correlated Noise
+        Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation
     </div>
 
     <div class="venue">
-        Oral at ICML'22
+        ICML 2023
     </div>
 
     <br><br>
 
     <div class="author">
-        <a href="https://gokul.dev/">Gokul Swamy</a><sup>1</sup>
+        <a href="https://andipeng.com/">Andi Peng</a><sup>1</sup>
     </div>
     <div class="author">
-        <a href="http://www.sanjibanchoudhury.com/">Sanjiban Choudhury</a><sup>2</sup>
+        <a href="https://avivne.github.io/">Aviv Netanyahu</a><sup>1</sup>
     </div>
     <div class="author">
-        <a href="https://www.ri.cmu.edu/ri-faculty/j-andrew-drew-bagnell/">Drew Bagnell</a><sup>3, 1</sup>
+        <a href="https://markkho.github.io/">Mark Ho</a><sup>2</sup>
     </div>
     <div class="author">
-        <a href="https://zstevenwu.com/">Steven Wu</a><sup>1</sup>
+        <a href="https://www.tshu.io/">Tianmin Shu</a><sup>1</sup>
+    </div>
+    <div class="author">
+        <a href="https://people.eecs.berkeley.edu/~abobu/">Andreea Bobu</a><sup>3</sup>
+    </div>
+    <div class="author">
+        <a href="https://interactive.mit.edu/about/people/julie">Julie Shah</a><sup>1</sup>
+    </div>
+    <div class="author">
+        <a href="https://people.csail.mit.edu/pulkitag/">Pulkit Agrawal</a><sup>1</sup>
     </div>
 
     <br><br>
 
-    <div class="affiliation"><sup>1&nbsp;</sup>CMU</div>
-    <div class="affiliation"><sup>2&nbsp;</sup>Cornell University</div>
-    <div class="affiliation"><sup>3&nbsp;</sup>Aurora Innovation</div>
+    <div class="affiliation"><sup>1&nbsp;</sup>MIT</div>
+    <div class="affiliation"><sup>2&nbsp;</sup>New York University</div>
+    <div class="affiliation"><sup>3&nbsp;</sup>University of California, Berkeley</div>
     
 
     <br><br>
 
     <div class="links"><a href="https://arxiv.org/pdf/2202.01312.pdf"><i class="fa fa-file-text", style="font-size: 50px; padding-bottom: 10px"></i><br>[Paper]</a></div>
-    <div class="links"><a href="https://www.youtube.com/watch?v=FPyL9vMGpFE"><i class="fa fa-play-circle" style="font-size: 50px; padding-bottom: 10px"></i><br>[Video]</a></div>
-    <div class="links"><a href="https://github.com/gkswamy98/causal_il"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a></div>
+    <div class="links"><a href="https://youtu.be/P5hopKcRCVk"><i class="fa fa-play-circle" style="font-size: 50px; padding-bottom: 10px"></i><br>[Video]</a></div>
 
     <br><br>
 
-    <img style="width: 45%;" src="./resources/causil_tikz.png" alt="Teaser figure."/>
+    <img style="width: 45%;" src="./resources/pipeline.pdf" alt="Teaser figure."/>
     <br>
     <p style="width: 80%;">
       <br> When temporally correlated noise affects a pair of expert actions, it can create spurious correlations between recorded states and actions. This is because it travels through the dynamics to affect the state at the next timestep as well as affecting the next action (red path above). Standard imitation learning algorithms like behavioral cloning might latch onto these spurious correlations and learn policies that perform poorly at test-time. We leverage modern variants of the instrumental variable technique to propose two algorithms that are able to provably match expert performance under TCN.
@@ -124,13 +132,13 @@
         </a>
     </div>
     <div class="paper-info">
-        <h3>Causal Imitation Learning under Temporally Correlated Noise</h3>
+        <h3>Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation</h3>
         <p>Gokul Swamy, Sanjiban Choudhury, J. Andrew Bagnell, Zhiwei Steven Wu</p>
         <pre><code>@misc{swamy2021causal,
-    title = {Causal Imitation Learning under Temporally Correlated Noise},
+    title = {Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation},
     author = {Gokul Swamy and Sanjiban Choudhury and J. Andrew Bagnell and Zhiwei Steven Wu},
-    year = {2022},
-    booktitle = {Proceedings of the 39th International Conference on Machine Learning}
+    year = {2023},
+    booktitle = {Proceedings of the 40th International Conference on Machine Learning (ICML) 2023}
 }</code></pre>
     </div>
 
