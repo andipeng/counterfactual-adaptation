@@ -1,0 +1,7 @@
+LICENSE
+README.md
+setup.py
+aligning_construals.egg-info/PKG-INFO
+aligning_construals.egg-info/SOURCES.txt
+aligning_construals.egg-info/dependency_links.txt
+aligning_construals.egg-info/top_level.txt
