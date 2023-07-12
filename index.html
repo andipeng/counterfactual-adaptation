@@ -80,21 +80,17 @@
 
     <img style="width: 45%;" src="./resources/pipeline.pdf" alt="Teaser figure."/>
     <br>
-    <p style="width: 80%;">
-      <br> Policies often fail due to distribution shift---changes in the state and reward that occur when a policy is deployed in new environments. Data augmentation can increase robustness by making the model invariant to <i>task-irrelevant<i> changes in the agent's observation. However, designers don't know which concepts are irrelevant <i>a priori<i>, especially when different end users have different preferences about how the task is performed. We propose an interactive framework to leverage feedback directly from the user to identify <i>personalized<i> task-irrelevant concepts. Our key idea is to generate <i>counterfactual demonstrations<i> that allow users to quickly identify possible task-relevant and irrelevant concepts. The knowledge of task-irrelevant concepts is then used to perform data augmentation and thus obtain a policy adapted to personalized user objectives. We present experiments validating our framework on discrete and continuous control tasks with real human users. Our method (1) enables users to better understand agent failure, (2) reduces the number of demonstrations required for fine-tuning, and (3) aligns the agent to individual user task preferences.
-    </p>
-    <hr>
 
     <h1>Abstract</h1>
     <p style="width: 80%;">
-        We develop algorithms for imitation learning from policy data that was corrupted by temporally correlated noise in expert actions. When noise affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the <i>instrumental variable regression</i> (IVR) technique of econometrics, enabling us to recover the underlying policy <i>without</i> requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator, and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We find both of our algorithms compare favorably to behavioral cloning on simulated control tasks.
+        <br> Policies often fail due to distribution shift---changes in the state and reward that occur when a policy is deployed in new environments. Data augmentation can increase robustness by making the model invariant to <i>task-irrelevant</i> changes in the agent's observation. However, designers don't know which concepts are irrelevant <i>a priori</i>, especially when different end users have different preferences about how the task is performed. We propose an interactive framework to leverage feedback directly from the user to identify <i>personalized</i> task-irrelevant concepts. Our key idea is to generate <i>counterfactual demonstrations</i> that allow users to quickly identify possible task-relevant and irrelevant concepts. The knowledge of task-irrelevant concepts is then used to perform data augmentation and thus obtain a policy adapted to personalized user objectives. We present experiments validating our framework on discrete and continuous control tasks with real human users. Our method (1) enables users to better understand agent failure, (2) reduces the number of demonstrations required for fine-tuning, and (3) aligns the agent to individual user task preferences.
     </p>
     <br>
     <hr>
 
     <h1>Video</h1>
     <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/FPyL9vMGpFE" frameBorder="0"
+        <iframe src="https://youtu.be/P5hopKcRCVk" frameBorder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen></iframe>
     </div>
