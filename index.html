@@ -1,0 +1,154 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> 
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./resources/style.css" media="screen"/>
+
+<html lang="en">
+<head>
+	<title>Causal Imitation Learning under Temporally Correlated Noise</title>
+    <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/
+        if you update and want to force Facebook to re-scrape. -->
+	<meta property="og:title" content="Causal Imitation Learning under Temporally Correlated Noise" />
+	<meta property="og:description" content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
+    <!-- Twitter automatically scrapes this. Go to https://cards-dev.twitter.com/validator?
+        if you update and want to force Twitter to re-scrape. -->
+    <meta property="twitter:card"          content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
+    <meta property="twitter:title"         content="Causal Imitation Learning under Temporally Correlated Noise" />
+    <meta property="twitter:description"   content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="title">
+        Causal Imitation Learning under Temporally Correlated Noise
+    </div>
+
+    <div class="venue">
+        Oral at ICML'22
+    </div>
+
+    <br><br>
+
+    <div class="author">
+        <a href="https://gokul.dev/">Gokul Swamy</a><sup>1</sup>
+    </div>
+    <div class="author">
+        <a href="http://www.sanjibanchoudhury.com/">Sanjiban Choudhury</a><sup>2</sup>
+    </div>
+    <div class="author">
+        <a href="https://www.ri.cmu.edu/ri-faculty/j-andrew-drew-bagnell/">Drew Bagnell</a><sup>3, 1</sup>
+    </div>
+    <div class="author">
+        <a href="https://zstevenwu.com/">Steven Wu</a><sup>1</sup>
+    </div>
+
+    <br><br>
+
+    <div class="affiliation"><sup>1&nbsp;</sup>CMU</div>
+    <div class="affiliation"><sup>2&nbsp;</sup>Cornell University</div>
+    <div class="affiliation"><sup>3&nbsp;</sup>Aurora Innovation</div>
+    
+
+    <br><br>
+
+    <div class="links"><a href="https://arxiv.org/pdf/2202.01312.pdf"><i class="fa fa-file-text", style="font-size: 50px; padding-bottom: 10px"></i><br>[Paper]</a></div>
+    <div class="links"><a href="https://www.youtube.com/watch?v=FPyL9vMGpFE"><i class="fa fa-play-circle" style="font-size: 50px; padding-bottom: 10px"></i><br>[Video]</a></div>
+    <div class="links"><a href="https://github.com/gkswamy98/causal_il"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a></div>
+
+    <br><br>
+
+    <img style="width: 45%;" src="./resources/causil_tikz.png" alt="Teaser figure."/>
+    <br>
+    <p style="width: 80%;">
+      <br> When temporally correlated noise affects a pair of expert actions, it can create spurious correlations between recorded states and actions. This is because it travels through the dynamics to affect the state at the next timestep as well as affecting the next action (red path above). Standard imitation learning algorithms like behavioral cloning might latch onto these spurious correlations and learn policies that perform poorly at test-time. We leverage modern variants of the instrumental variable technique to propose two algorithms that are able to provably match expert performance under TCN.
+    </p>
+    <hr>
+
+    <h1>Abstract</h1>
+    <p style="width: 80%;">
+        We develop algorithms for imitation learning from policy data that was corrupted by temporally correlated noise in expert actions. When noise affects multiple timesteps of recorded data, it can manifest as spurious correlations between states and actions that a learner might latch on to, leading to poor policy performance. To break up these spurious correlations, we apply modern variants of the <i>instrumental variable regression</i> (IVR) technique of econometrics, enabling us to recover the underlying policy <i>without</i> requiring access to an interactive expert. In particular, we present two techniques, one of a generative-modeling flavor (<code>DoubIL</code>) that can utilize access to a simulator, and one of a game-theoretic flavor (<code>ResiduIL</code>) that can be run entirely offline. We find both of our algorithms compare favorably to behavioral cloning on simulated control tasks.
+    </p>
+    <br>
+    <hr>
+
+    <h1>Video</h1>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/FPyL9vMGpFE" frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
+    <br>
+
+    <hr>
+
+    <h1>Key Insights</h1>
+
+    <h2>1. Dangers of TCN in Imitation Learning</h2>
+    <p style="width: 80%;">The core reason TCN is dangerous is that it introduces spurious correlations in the recorded actions that do not have their true cause in the recorded state. When TCN from a past step travels through the dynamics to influence the next state, the next state and next action are also spuriously correlated. This breaks a cardinal assumption of regression as both the inputs (states) and targets (actions) are affected by the same noise, rendering standard imitation learning approaches inconsistent. This manifests as the learner trying to reproduce the TCN, which compunds with the TCN at test time to lead to poor performance. For example, if a quadcopter flight demonstration is perturbed by TCN in the form of wind, the learner might attempt to swerve as much as the expert did, which would lead to even more swerving due to the continued influence of the wind!</p>
+
+    <h2>2. Instrumental Variable Regression</h2>
+    <p style="width: 80%;">While a queryable expert would be able to give us action labels that are not affected by TCN, this is not a realistic assumption for many domains. We instead focus on learning from <i>observational</i> data in the form of collected expert demonstrations. We build upon a technique from econometrics known as <i>instrumental variable regression</i> to denoise the inputs to our regression procedure. To do this, one conditions on an <i>instrument</i> $Z$: a source of random variation independent of the confounder (the shared noise between $X$ and $Y$). Graphically,</p>
+    <img style="width: 22%;" src="./resources/ivr.png" alt="IVR."/>
+    <p style="width: 80%;"> Mathematically, instead of regressing from $X \rightarrow Y$, one regresses from $X|Z \rightarrow Y|Z$. We present a unified deriviation of modern IVR techniques and derive performance bounds for them in our paper.</p>
+
+    <h2>3. Two Algorithms for Imitation under TCN</h2>
+    <p style="width: 80%;">The natural question at this point is how to apply IVR to the imitation learning problem. Our key insight is that we can leverage <i>past states</i> as an instrument as they are independent of future TCN! Graphically, </p>
+    <img style="width: 40%;" src="./resources/seq_ivr.png" alt="Sequential IVR."/>
+        
+    <p style="width: 80%;"> In math, we minimize $\mathbb{E}[\mathbb{E}[(a_{t} - \pi(s_{t})|s_{t-1}]^2]$ instead of $\mathbb{E}[(a_t - \pi(s_t))^2]$ like usual. We derive two algorithms for doing so efficiently with strong performance guarantees:</p>
+    <ul style="width: 80%; margin: auto; text-align: left; list-style-type: none;">
+        <li><code>DoubIL</code>: One first runs behavioral cloning, plugs in the proposed actions into a simulator to get fresh state draws, and then regresses from these fresh states to the recorded expert actions. Enjoys performance bound $J(\pi_E) - J(\pi) \leq c(\sqrt{\epsilon} + \sqrt{\delta})\kappa(\Pi)T^2$.</li>
+        <li><code>ResiduIL</code>: A purely offline algorithm that has the learner minimize an instrument-weighted residual with the weighting being chosen by an adversary. Enjoys performance bound $J(\pi_E) - J(\pi) \leq c\sqrt{\epsilon}\kappa(\Pi)T^2$.</li>
+      </ul> <br>
+      <p style="width: 80%;"> We emphasize that standard IL algorithms like behavioral cloning have no such performance guarantees under TCN. We implement both algorithms in PyTorch and test them out on environments from the PyBullet suite. We find that we are able to significantly outperform behavioral cloning at matching denoised expert actions, cumulative reward, and generalizing to different noise distributions. We release our code below.</p>
+      <a href="https://github.com/gkswamy98/causal_il"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a>
+      <hr>
+
+    <h1>Paper</h1>
+    <div class="paper-thumbnail">
+        <a href="https://arxiv.org/pdf/2202.01312.pdf">
+            <img class="layered-paper-big" width="100%" src="./resources/paper.svg" alt="Paper thumbnail"/>
+        </a>
+    </div>
+    <div class="paper-info">
+        <h3>Causal Imitation Learning under Temporally Correlated Noise</h3>
+        <p>Gokul Swamy, Sanjiban Choudhury, J. Andrew Bagnell, Zhiwei Steven Wu</p>
+        <pre><code>@misc{swamy2021causal,
+    title = {Causal Imitation Learning under Temporally Correlated Noise},
+    author = {Gokul Swamy and Sanjiban Choudhury and J. Andrew Bagnell and Zhiwei Steven Wu},
+    year = {2022},
+    booktitle = {Proceedings of the 39th International Conference on Machine Learning}
+}</code></pre>
+    </div>
+
+    <br>
+    <hr>
+
+    <h1>Acknowledgements</h1>
+    <p style="width: 80%;">
+        This template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a>
+        and <a href="http://richzhang.github.io/">Richard Zhang</a> for a
+        <a href="http://richzhang.github.io/colorization/">colorful</a> ECCV project, and
+        adapted to be mobile responsive by <a href="https://github.com/jasonyzhang/webpage-template">Jason Zhang</a>.
+        The code we built on can be found <a href="https://github.com/elliottwu/webpage-template">here</a>.
+    </p>
+
+    <br>
+</div>
+
+</body>
+
+</html>
