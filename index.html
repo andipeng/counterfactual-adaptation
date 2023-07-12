@@ -1,3 +1,14 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="http://www.google.com/jsapi" type="text/javascript"></script>
 <script type="text/javascript">google.load("jquery", "1.3.2");</script>
 <script type="text/x-mathjax-config">
@@ -15,20 +26,6 @@
 <link rel="stylesheet" type="text/css" href="./resources/style.css" media="screen"/>
 
 <html lang="en">
-<head>
-	<title>Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation</title>
-    <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/
-        if you update and want to force Facebook to re-scrape. -->
-	<meta property="og:title" content="Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation" />
-	<meta property="og:description" content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
-    <!-- Twitter automatically scrapes this. Go to https://cards-dev.twitter.com/validator?
-        if you update and want to force Twitter to re-scrape. -->
-    <meta property="twitter:card"          content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
-    <meta property="twitter:title"         content="Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation" />
-    <meta property="twitter:description"   content="When temporally correlated noise affects multiple expert actions, it can introduce spurious correlations that an imitation learner might latch onto. We leverage modern variants of the instrumental variable regression technique to consistently recover the expert policy under TCN." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-</head>
 
 <body>
 <div class="container">
@@ -67,8 +64,8 @@
     <br><br>
 
     <div class="affiliation"><sup>1&nbsp;</sup>MIT</div>
-    <div class="affiliation"><sup>2&nbsp;</sup>New York University</div>
-    <div class="affiliation"><sup>3&nbsp;</sup>University of California, Berkeley</div>
+    <div class="affiliation"><sup>2&nbsp;</sup>NYU</div>
+    <div class="affiliation"><sup>3&nbsp;</sup>UC Berkeley</div>
     
 
     <br><br>
@@ -98,29 +95,25 @@
 
     <hr>
 
-    <h1>Key Insights</h1>
+    <h1>Framework Overview</h1>
 
-    <h2>1. Dangers of TCN in Imitation Learning</h2>
-    <p style="width: 80%;">The core reason TCN is dangerous is that it introduces spurious correlations in the recorded actions that do not have their true cause in the recorded state. When TCN from a past step travels through the dynamics to influence the next state, the next state and next action are also spuriously correlated. This breaks a cardinal assumption of regression as both the inputs (states) and targets (actions) are affected by the same noise, rendering standard imitation learning approaches inconsistent. This manifests as the learner trying to reproduce the TCN, which compunds with the TCN at test time to lead to poor performance. For example, if a quadcopter flight demonstration is perturbed by TCN in the form of wind, the learner might attempt to swerve as much as the expert did, which would lead to even more swerving due to the continued influence of the wind!</p>
+    <h2>Diagnosing Distribution Shift Failures</h2>
+    <p style="width: 80%;">Policies can fail due to different distribution shifts. The figure below shows illustrative distribution shifts for task: <b>``Get my mug."</b> Shifted concepts can be state-based (a changed object) and also reward-based (dependent on user preference). We can deploy data augmentation for <i>task-irrelevant</i> shifts (green checks), a subset where the modified state <i>does not impact</i> desired policy behaviour. But how do we know what's task-irrelevant vs. -relevant for each user?</p>
+    <img style="width: 70%;" src="./resources/shifts.png" alt="shifts."/>
 
-    <h2>2. Instrumental Variable Regression</h2>
-    <p style="width: 80%;">While a queryable expert would be able to give us action labels that are not affected by TCN, this is not a realistic assumption for many domains. We instead focus on learning from <i>observational</i> data in the form of collected expert demonstrations. We build upon a technique from econometrics known as <i>instrumental variable regression</i> to denoise the inputs to our regression procedure. To do this, one conditions on an <i>instrument</i> $Z$: a source of random variation independent of the confounder (the shared noise between $X$ and $Y$). Graphically,</p>
-    <img style="width: 22%;" src="./resources/ivr.png" alt="IVR."/>
-    <p style="width: 80%;"> Mathematically, instead of regressing from $X \rightarrow Y$, one regresses from $X|Z \rightarrow Y|Z$. We present a unified deriviation of modern IVR techniques and derive performance bounds for them in our paper.</p>
+    <h2>Generating Counterfactual Demonstrations for Human Feedback</h2>
+    <p style="width: 80%;">Our key insight is that <i>end users are uniquely positioned to recognize which concepts are relevant or irrelevant for their desired task.</i> But how do we elicit good concept-level human feedback? We propose a counterfactual approach to identify failure. Consider that the human also observes a trajectory of the robot successfully retrieving the object in the same scenario but with a single change -- the pan being blue instead of striped. Being able to contrast the two trajectories of successful and unsuccessful behaviour can better position the user to identify visual concepts impacting failure. Here, the user may identify pan material to be a task-irrelevant concept, which can then be used to make the policy invariant to this concept via data augmentation.</p>
+    <img style="width: 45%;" src="./resources/counterfactual.png" alt="counterfactual."/>
+    <img style="width: 40%;" src="./resources/algo.png" alt="algo."/>
 
-    <h2>3. Two Algorithms for Imitation under TCN</h2>
-    <p style="width: 80%;">The natural question at this point is how to apply IVR to the imitation learning problem. Our key insight is that we can leverage <i>past states</i> as an instrument as they are independent of future TCN! Graphically, </p>
-    <img style="width: 40%;" src="./resources/seq_ivr.png" alt="Sequential IVR."/>
-        
-    <p style="width: 80%;"> In math, we minimize $\mathbb{E}[\mathbb{E}[(a_{t} - \pi(s_{t})|s_{t-1}]^2]$ instead of $\mathbb{E}[(a_t - \pi(s_t))^2]$ like usual. We derive two algorithms for doing so efficiently with strong performance guarantees:</p>
-    <ul style="width: 80%; margin: auto; text-align: left; list-style-type: none;">
-        <li><code>DoubIL</code>: One first runs behavioral cloning, plugs in the proposed actions into a simulator to get fresh state draws, and then regresses from these fresh states to the recorded expert actions. Enjoys performance bound $J(\pi_E) - J(\pi) \leq c(\sqrt{\epsilon} + \sqrt{\delta})\kappa(\Pi)T^2$.</li>
-        <li><code>ResiduIL</code>: A purely offline algorithm that has the learner minimize an instrument-weighted residual with the weighting being chosen by an adversary. Enjoys performance bound $J(\pi_E) - J(\pi) \leq c\sqrt{\epsilon}\kappa(\Pi)T^2$.</li>
-      </ul> <br>
-      <p style="width: 80%;"> We emphasize that standard IL algorithms like behavioral cloning have no such performance guarantees under TCN. We implement both algorithms in PyTorch and test them out on environments from the PyBullet suite. We find that we are able to significantly outperform behavioral cloning at matching denoised expert actions, cumulative reward, and generalizing to different noise distributions. We release our code below.</p>
-      <a href="https://github.com/gkswamy98/causal_il"><i class="fa fa-github" style="font-size: 50px; padding-bottom: 10px"></i><br>[Code]</a>
-      <hr>
+    <h2>Adaptation to Personalized User Objectives</h2>
+    <p style="width: 80%;">We test our framework in three domains consisting of both discrete and continuous control tasks with real human users. Through human experiments, we verify our main hypothesis that user feedback resulting from counterfactual demonstrations significantly improves the accuracy of user-identified TI concepts as well as the data efficiency of policy finetuning with <i>less user effort</i>. </p>
+    <img style="width: 70%;" src="./resources/accuracy.png" alt="accuracy."/>
 
+     <p style="width: 80%;">Moreover, policies finetuned using this human feedback (CF-H) result in higher performance with less expert demonstrations required compared to baselines. These findings illustrate a promising direction into leveraging end users to more efficiently perform interactive alignment of robotic policies at test-time. </p>
+     <img style="width: 70%;" src="./resources/finetuning.png" alt="finetuning."/>
+
+    <hr>
     <h1>Paper</h1>
     <div class="paper-thumbnail">
         <a href="https://arxiv.org/pdf/2202.01312.pdf">
@@ -130,9 +123,9 @@
     <div class="paper-info">
         <h3>Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation</h3>
         <p>Andi Peng, Aviv Netanyahu, Mark Ho, Tianmin Shu, Andreea Bobu, Julie Shah, and Pulkit Agrawal</p>
-        <pre><code>@misc{peng2023diagnosis,
+        <pre><code>@inproceedings{peng2023diagnosis,
     title = {Diagnosis, Feedback, Adaptation: A Human-in-the-Loop Framework for Test-Time Policy Adaptation},
-    author = {Andi Peng and Aviv Netanyahu and Mark Ho and Tianmin Shu and Andreea Bobu and Julie Shah and Pulkit Agrawal},
+    author = {Peng, Andi and Netanyahu, Aviv and Ho, Mark and Shu, Tianmin and Bobu, Andreea and Shah, Julie and Agrawal, Pulkit},
     year = {2023},
     booktitle = {Proceedings of the 40th International Conference on Machine Learning (ICML) 2023}
 }</code></pre>
@@ -141,6 +134,67 @@
     <br>
     <hr>
 
+ <section id="paper">
+        <h2>Team</h2>        
+        <div class="row">
+            <div class="column5">
+                <a href='https://andipeng.com/'>
+                    <img src=./resources/people/andi.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Andi Peng </p>
+                <p class=institution>MIT</p>
+            </div>
+
+            <div class="column5">
+                <a href='https://avivne.github.io/'>
+                    <img  src=./resources/people/aviv.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Aviv Netanyahu </p>
+                <p class=institution>MIT</p>
+            </div>
+
+            <div class="column5">
+                <a href='https://markkho.github.io/'>
+                    <img  src=./resources/people/mark.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Mark Ho </p>
+                <p class=institution>NYU</p>
+            </div>
+
+            <div class="column5">
+                <a href='https://www.tshu.io/'>
+                    <img  src=./resources/people/tianmin.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Tianmin Shu </p>
+                <p class=institution>MIT</p>
+            </div>
+
+            <div class="column5">
+                <a href='https://people.eecs.berkeley.edu/~abobu/'>
+                    <img  src=./resources/people/andreea.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Andreea Bobu </p>
+                <p class=institution>UC Berkeley</p>
+            </div>
+
+            <div class="column5">
+                <a href='https://interactive.mit.edu/about/people/julie'>
+                    <img  src=./resources/people/julie.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Julie Shah </p>
+                <p class=institution>MIT</p>
+            </div>
+
+            <div class="column5">
+                <a href='https://people.csail.mit.edu/pulkitag/'>
+                    <img  src=./resources/people/pulkit.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
+                </a>
+                <p class=profname> Pulkit Agrawal </p>
+                <p class=institution>MIT</p>
+            </div>
+    </section>
+
+    <hr>
     <h1>Acknowledgements</h1>
     <p style="width: 80%;">
         This template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a>
